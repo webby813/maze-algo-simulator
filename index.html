@@ -35,10 +35,10 @@
 			<div class="choice" id="grid-setting">
 
 				<span class="choice_label" id="choice_label_1">Maze size</span>
-				<form class="select">
+				<form class="select" id="grid-size-form">
 					<label>Grid size:</label>
-					<input type="number">
-					<input type="submit" title="Generate">
+					<input type="number" id="grid-size-input" min="1" max="100" value="32"> <!-- 默认值设为 32 -->
+					<input type="button" value="Generate" id="generate-button">
 				</form>
 			</div>
 
