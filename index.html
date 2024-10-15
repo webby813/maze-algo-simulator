@@ -37,8 +37,10 @@
 				<span class="choice_label" id="choice_label_1">Maze size</span>
 				<form class="select" id="grid-size-form">
 					<label>Grid size:</label>
-					<input type="number" id="grid-size-input" min="1" max="100" value="32"> <!-- 默认值设为 32 -->
-					<input type="button" value="Generate" id="generate-button">
+					<input type="number" id="grid-size-input" min="1" max="100" value="32">
+					<input type="button" value="Make Grid" id="generate-button" onclick="generate_grid();">
+					<input type="button" value="Generate" id="generate-button" onclick="randomized_depth_first();">
+
 				</form>
 			</div>
 
@@ -48,9 +50,9 @@
 					<select id="slct_1" required="required">
 						<option selected value="1">Breadth-First</option>
 						<option value="2">Bidirectional Breadth-First</option>
-						<option value="3">Greedy Best-First</option>
-						<option value="4">Dijkstra</option>
-						<option value="5">A*</option>
+						<!-- <option value="3">Greedy Best-First</option> -->
+						<option value="3">Dijkstra</option>
+						<option value="4">A*</option>
 					</select>
 					<svg>
 						<use xlink:href="#select-arrow-down"></use>
@@ -64,11 +66,6 @@
 					<select id="slct_2" required="required">
 						<option hidden selected value="0">Custom</option>
 						<option value="1">Randomized Depth-First</option>
-						<option value="2">Kruskal's Algorithm</option>
-						<option value="3">Prim's Algorithm</option>
-						<option value="4">Wilson's Algorithm</option>
-						<option value="5">Aldous-Broder Algorithm</option>
-						<option value="6">Recursive Division</option>
 					</select>
 					<svg>
 						<use xlink:href="#select-arrow-down"></use>

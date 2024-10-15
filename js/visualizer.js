@@ -1,82 +1,94 @@
 "use strict";
 
-function set_grid_properties()
+function set_grid_properties(custom_grid_size)
 {
-	let ratio = (window.innerWidth - menu_width) / window.innerHeight;
+    let ratio = (window.innerWidth - menu_width) / window.innerHeight;
+    let max_grid_size = custom_grid_size || initial_max_grid_size;
 
-	if (ratio > 1)
-	{
-		grid_size_x = initial_max_grid_size;
-		grid_size_y = Math.floor(initial_max_grid_size / ratio);
+    if (ratio > 1)
+    {
+        grid_size_x = max_grid_size;
+        grid_size_y = Math.floor(max_grid_size / ratio);
 
-		if (grid_size_y % 2 == 0)
-			grid_size_y += 1;
+        if (grid_size_y % 2 == 0)
+            grid_size_y += 1;
 
-		cell_size = Math.floor((window.innerWidth - menu_width) / initial_max_grid_size);
-	}
+        cell_size = Math.floor((window.innerWidth - menu_width) / max_grid_size);
+    }
+    else
+    {
+        grid_size_x = Math.floor(max_grid_size * ratio);
+        grid_size_y = max_grid_size;
 
-	else
-	{
-		grid_size_x = Math.floor(initial_max_grid_size * ratio);
-		grid_size_y = initial_max_grid_size;
+        if (grid_size_x % 2 == 0)
+            grid_size_x += 1;
 
-		if (grid_size_x % 2 == 0)
-			grid_size_x += 1;
-
-		cell_size = Math.floor(window.innerHeight / initial_max_grid_size);
-	}
+        cell_size = Math.floor(window.innerHeight / max_grid_size);
+    }
 }
+
 
 function generate_grid()
 {
-	set_grid_properties();
+    // Get the value from the input field
+    let input_grid_size = parseInt(document.querySelector("#grid-size-input").value);
 
-	let table = document.createElement("table");
-	table.id = "my_table";
+    // Clear the previous grid if it exists
+    let existing_table = document.querySelector("#my_table");
+    if (existing_table) {
+        existing_table.remove();
+    }
 
-	for (let i = 0; i < grid_size_y; i++)
-	{
-		let row = document.createElement("tr");
+    // Pass the input value to set_grid_properties
+    set_grid_properties(input_grid_size);
 
-		for (let j = 0; j < grid_size_x; j++)
-		{
-			let cell = document.createElement("td");
-			let class_name = "";
+    let table = document.createElement("table");
+    table.id = "my_table";
 
-			if ((i + j) % 2 == 0)
-				class_name = "cell cell_1";
-			else
-				class_name = "cell cell_2";
+    for (let i = 0; i < grid_size_y; i++)
+    {
+        let row = document.createElement("tr");
 
-			class_name += " x_" + j.toString(10) + " y_" + i.toString(10);
-			cell.className = class_name;
-			row.appendChild(cell);
-		}
+        for (let j = 0; j < grid_size_x; j++)
+        {
+            let cell = document.createElement("td");
+            let class_name = "";
 
-		table.appendChild(row);
-	}
+            if ((i + j) % 2 == 0)
+                class_name = "cell cell_1";
+            else
+                class_name = "cell cell_2";
 
-	document.querySelector("#grid").appendChild(table);
-	grid = new Array(grid_size_x).fill(0).map(() => new Array(grid_size_y).fill(0));
+            class_name += " x_" + j.toString(10) + " y_" + i.toString(10);
+            cell.className = class_name;
+            row.appendChild(cell);
+        }
 
-	start_pos = [Math.floor(grid_size_x / 4), Math.floor(grid_size_y / 2)];
-	target_pos = [Math.floor((3 * grid_size_x) / 4), Math.floor(grid_size_y / 2)];
+        table.appendChild(row);
+    }
 
-	if (start_pos[0] % 2 == 0)
-		start_pos[0] += 1;
+    document.querySelector("#grid").appendChild(table);
+    grid = new Array(grid_size_x).fill(0).map(() => new Array(grid_size_y).fill(0));
 
-	if (start_pos[1] % 2 == 0)
-		start_pos[1] -= 1;
+    start_pos = [Math.floor(grid_size_x / 4), Math.floor(grid_size_y / 2)];
+    target_pos = [Math.floor((3 * grid_size_x) / 4), Math.floor(grid_size_y / 2)];
 
-	if (target_pos[0] % 2 == 0)
-		target_pos[0] += 1;
+    if (start_pos[0] % 2 == 0)
+        start_pos[0] += 1;
 
-	if (target_pos[1] % 2 == 0)
-		target_pos[1] -= 1;
+    if (start_pos[1] % 2 == 0)
+        start_pos[1] -= 1;
 
-	place_to_cell(start_pos[0], start_pos[1]).classList.add("start");
-	place_to_cell(target_pos[0], target_pos[1]).classList.add("target");
+    if (target_pos[0] % 2 == 0)
+        target_pos[0] += 1;
+
+    if (target_pos[1] % 2 == 0)
+        target_pos[1] -= 1;
+
+    place_to_cell(start_pos[0], start_pos[1]).classList.add("start");
+    place_to_cell(target_pos[0], target_pos[1]).classList.add("target");
 }
+
 
 function delete_grid()
 {

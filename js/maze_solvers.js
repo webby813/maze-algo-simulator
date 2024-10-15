@@ -191,69 +191,6 @@ function bidirectional_breadth_first()
 	maze_solvers_interval();
 }
 
-function greedy_best_first()
-{
-	node_list = [];
-	node_list_index = 0;
-	path_list = [];
-	path_list_index = 0;
-	found = false;
-	path = false;
-	let frontier = [start_pos];
-	grid[start_pos[0]][start_pos[1]] = 1;
-
-	do
-	{
-		frontier.sort(function(a, b)
-		{
-			return distance(a, target_pos) - distance(b, target_pos);
-		});
-
-		let list = get_neighbours(frontier[0], 1);
-		frontier.splice(0, 1);
-
-		for (let i = 0; i < list.length; i++)
-			if (get_node(list[i][0], list[i][1]) == 0)
-			{
-				frontier.push(list[i]);
-				grid[list[i][0]][list[i][1]] = i + 1;
-
-				if (list[i][0] == target_pos[0] && list[i][1] == target_pos[1])
-				{
-					found = true;
-					break;
-				}
-
-				node_list.push(list[i]);
-			}
-	}
-	while (frontier.length > 0 && !found)
-
-	if (found)
-	{
-		let current_node = target_pos;
-
-		while (current_node[0] != start_pos[0] || current_node[1] != start_pos[1])
-		{
-			switch (grid[current_node[0]][current_node[1]])
-			{
-				case 1: current_node = [current_node[0], current_node[1] + 1]; break;
-				case 2: current_node = [current_node[0] - 1, current_node[1]]; break;
-				case 3: current_node = [current_node[0], current_node[1] - 1]; break;
-				case 4: current_node = [current_node[0] + 1, current_node[1]]; break;
-				default: break;
-			}
-
-			path_list.push(current_node);
-		}
-
-		path_list.pop();
-		path_list.reverse();
-	}
-
-	maze_solvers_interval();
-}
-
 function dijkstra()
 {
 	breadth_first();
@@ -346,11 +283,9 @@ function maze_solvers()
 		bidirectional_breadth_first();
 
 	else if (document.querySelector("#slct_1").value == "3")
-		greedy_best_first();
-
-	else if (document.querySelector("#slct_1").value == "4")
 		dijkstra();
 
-	else if (document.querySelector("#slct_1").value == "5")
+	else if (document.querySelector("#slct_1").value == "4")
 		a_star();
+		
 }
