@@ -206,5 +206,44 @@ input{
 }
 
 #dashboard{
-	top: 500px;
+	top: 550px;
 }
+
+.dashboard-table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 15px;
+    color: #404d68;
+}
+
+.dashboard-table th, .dashboard-table td {
+    padding: 8px;
+}
+
+.dashboard-table th {
+    background-color: #404d68;
+
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.dashboard-table td:first-child {
+    text-align: left;
+    width: 60%;
+}
+
+.dashboard-table td:nth-child(2) {
+    text-align: center;
+    width: 25%;
+}
+
+.dashboard-table td:last-child {
+    text-align: left;
+    width: 15%;
+}
+
+
+
+
+
