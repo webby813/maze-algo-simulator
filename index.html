@@ -34,12 +34,10 @@
 			<br><br>
 
 			<div class="choice" id="grid-setting">
-
-				<span class="choice_label" id="choice_label_1">Maze size</span>
-				<form class="select" id="grid-size-form">
-					<label>Grid size:</label>
-					<input type="number" id="grid-size-input" min="1" max="100" value="32">
-					<input type="button" value="Make Grid" id="generate-button" onclick="generate_grid();">
+				<span class="choice_label" id="choice_label_1">Grid Size:</span>
+				<form id="grid-size-form" style="margin-top: 5px;">
+					<input class="grid-input" type="number" id="grid-size-input">
+					<input class="my_button" value="Generate" id="generate_button" onclick="generate_grid();">
 				</form>
 			</div>
 
@@ -49,7 +47,7 @@
 					<select id="slct_1" required="required">
 						<option selected value="1">Breadth-First</option>
 						<option value="2">Bidirectional Breadth-First</option>
-						<!-- <option value="3">Greedy Best-First</option> -->
+						<option value="3">Greedy Best-First</option>
 						<option value="3">Dijkstra</option>
 						<option value="4">A*</option>
 					</select>
@@ -85,6 +83,11 @@
 					<polyline points="1 1 5 5 9 1"></polyline>
 				</symbol>
 			</svg>
+
+			<div class="choice" id="dashboard">
+				<span class="choice_label" id="choice_label_1">Dashboard</span>
+			</div>
+
 		</div>
 
 		<div id="visualizer">

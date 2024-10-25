@@ -44,12 +44,12 @@ input{
 
 #choice_1
 {
-	top: 240px;
+	top: 220px;
 }
 
 #choice_2
 {
-	top: 340px;
+	top: 310px;
 }
 
 .choice_label
@@ -139,8 +139,8 @@ input{
 	position: absolute;
 	transform: translate(-50%, -50%);
 	width: 40%;
-	top: 460px;
-	left: 50%;
+	top: 420px;
+	left: 29%;
 }
 
 #button_2
@@ -148,8 +148,8 @@ input{
 	position: absolute;
 	transform: translate(-50%, -50%);
 	width: 40%;
-	top: 520px;
-	left: 50%;
+	top: 420px;
+	left: 72%;
 }
 
 .my_button
@@ -182,4 +182,29 @@ input{
 {
 	background: rgb(48, 212, 84);
 	color: white;
+}
+
+.grid-input{
+	width: 135px; 
+	height: 30px;
+	border: 1px solid #c9cfd8; 
+	border-radius: 5px; 
+	text-align: center;
+}
+
+.grid-input:hover{
+	border: none;
+	border-color:  rgb(48, 212, 84);
+	box-shadow: 0 0 0 2px rgba(0,119,255,0.2);
+}
+
+#generate_button{
+	width: 120px;
+	height: 35px;
+	background: rgb(48, 212, 84);
+	color: white;
+}
+
+#dashboard{
+	top: 500px;
 }
