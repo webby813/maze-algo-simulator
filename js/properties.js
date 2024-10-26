@@ -1,6 +1,6 @@
 "use strict";
 
-const initial_max_grid_size = 47;
+const initial_max_grid_size = 20;
 const menu_width = 323;
 
 let cell_size;
