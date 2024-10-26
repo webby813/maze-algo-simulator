@@ -130,6 +130,7 @@ function remove_wall(x, y)
 
 function clear_grid()
 {
+	ResetDashboard();
 	if (!grid_clean)
 	{
 		for (let i = 0; i < timeouts.length; i++)

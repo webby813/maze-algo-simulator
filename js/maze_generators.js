@@ -101,6 +101,7 @@ function randomized_depth_first()
 
 function maze_generators()
 {
+	clear_grid();
 	let start_temp = start_pos;
 	let target_temp = target_pos;
 	hidden_clear();

@@ -214,6 +214,8 @@ input{
     border-collapse: collapse;
     font-size: 15px;
     color: #404d68;
+    width: 250px;
+    table-layout: fixed;
 }
 
 .dashboard-table th, .dashboard-table td {
