@@ -9,6 +9,8 @@ function distance(point_1, point_2) {
 }
 
 async function maze_solvers_interval() {
+    const start_Time = performance.now();
+    let finish_Time = 0;
     return new Promise((resolve) => {
         const my_interval = window.setInterval(function () {
             if (!path) {
@@ -20,6 +22,8 @@ async function maze_solvers_interval() {
                         clearInterval(my_interval);
                         resolve();
                     } else {
+                        finish_Time = performance.now();
+                        FinishLog(start_Time, finish_Time);
                         path = true;
                         place_to_cell(start_pos[0], start_pos[1]).classList.add("cell_path");
                     }
@@ -43,8 +47,6 @@ async function breadth_first() {
     monitorMemoryUsage("Before breadth-first execution");
     const memoryInterval = monitorMemoryPeriodically();
 
-    const start_Time = performance.now();
-    let finish_Time = 0;
     node_list = [];
     node_list_index = 0;
     path_list = [];
@@ -71,6 +73,7 @@ async function breadth_first() {
     } while (frontier.length > 0 && !found);
 
     if (found) {
+
         let current_node = target_pos;
         while (current_node[0] !== start_pos[0] || current_node[1] !== start_pos[1]) {
             switch (grid[current_node[0]][current_node[1]]) {
@@ -86,97 +89,16 @@ async function breadth_first() {
         path_list.reverse();
     }
     await maze_solvers_interval();
-    finish_Time = performance.now();
-    FinishLog(start_Time, finish_Time);
 
     clearInterval(memoryInterval);
     monitorMemoryUsage("After breadth-first execution");
 }
 
-async function bidirectional_breadth_first() {
-    monitorMemoryUsage("Before bidirectional execution");
-    const memoryInterval = monitorMemoryPeriodically();
-
-    const start_Time = performance.now();
-	let finish_Time = 0;
-    node_list = [];
-    node_list_index = 0;
-    path_list = [];
-    path_list_index = 0;
-    found = false;
-    path = false;
-    let current_cell;
-    let start_end;
-    let target_end;
-    let frontier = [start_pos, target_pos];
-    grid[target_pos[0]][target_pos[1]] = 1;
-    grid[start_pos[0]][start_pos[1]] = 11;
-
-    do {
-        current_cell = frontier[0];
-        let list = get_neighbours(current_cell, 1);
-        frontier.splice(0, 1);
-
-        for (let i = 0; i < list.length; i++) {
-            if (get_node(list[i][0], list[i][1]) === 0) {
-                frontier.push(list[i]);
-
-                if (grid[current_cell[0]][current_cell[1]] < 10) {
-                    grid[list[i][0]][list[i][1]] = i + 1;
-                } else {
-                    grid[list[i][0]][list[i][1]] = 11 + i;
-                }
-
-                node_list.push(list[i]);
-            } else if (get_node(list[i][0], list[i][1]) > 0) {
-                if (grid[current_cell[0]][current_cell[1]] < 10 && get_node(list[i][0], list[i][1]) > 10) {
-                    start_end = current_cell;
-                    target_end = list[i];
-                    found = true;
-                    break;
-                } else if (grid[current_cell[0]][current_cell[1]] > 10 && get_node(list[i][0], list[i][1]) < 10) {
-                    start_end = list[i];
-                    target_end = current_cell;
-                    found = true;
-                    break;
-                }
-            }
-        }
-    } while (frontier.length > 0 && !found);
-
-    if (found) {
-        let targets = [target_pos, start_pos];
-        let starts = [start_end, target_end];
-
-        for (let i = 0; i < starts.length; i++) {
-            let current_node = starts[i];
-
-            while (current_node[0] !== targets[i][0] || current_node[1] !== targets[i][1]) {
-                path_list.push(current_node);
-
-                switch (grid[current_node[0]][current_node[1]] - (i * 10)) {
-                    case 1: current_node = [current_node[0], current_node[1] + 1]; break;
-                    case 2: current_node = [current_node[0] - 1, current_node[1]]; break;
-                    case 3: current_node = [current_node[0], current_node[1] - 1]; break;
-                    case 4: current_node = [current_node[0] + 1, current_node[1]]; break;
-                    default: break;
-                }
-            }
-            if (i === 0) path_list.reverse();
-        }
-        path_list.reverse();
-    }
-
-    await maze_solvers_interval();
-    finish_Time = performance.now();
-    FinishLog(start_Time, finish_Time);
-
-
-    clearInterval(memoryInterval);
-    monitorMemoryUsage("After bidirectional execution");
+function dijkstra() {
+    breadth_first();
 }
 
-function dijkstra() {
+function contraction_hierarchy_Dijkstra() {
     breadth_first();
 }
 
@@ -259,9 +181,9 @@ function maze_solvers() {
     } else if (document.querySelector("#slct_1").value === "1") {
         breadth_first();
     } else if (document.querySelector("#slct_1").value === "2") {
-        bidirectional_breadth_first();
-    } else if (document.querySelector("#slct_1").value === "3") {
         dijkstra();
+    } else if (document.querySelector("#slct_1").value === "3") {
+        contraction_hierarchy_Dijkstra()
     } else if (document.querySelector("#slct_1").value === "4") {
         a_star();
     }

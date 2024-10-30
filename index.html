@@ -44,10 +44,9 @@
 				<span class="choice_label" id="choice_label_1">Maze solving algorithm</span>
 				<label class="select" for="slct_1">
 					<select id="slct_1" required="required">
-						<option selected value="1">Breadth-First</option>
-						<option value="2">Bidirectional Breadth-First</option>
-						<option value="3">Greedy Best-First</option>
-						<option value="3">Dijkstra</option>
+						<option value="1">Breadth-First</option>
+						<option selected value="2">Dijkstra</option>
+						<option value="3">Contraction Hierarchy Dijkstra</option>
 						<option value="4">A*</option>
 					</select>
 					<svg>
@@ -88,10 +87,6 @@
 			<div class="choice" id="dashboard">
 				<span class="choice_label">Dashboard</span>
 				<table class="dashboard-table">
-					<!-- <tr>
-						<td>Arrival Time</td>
-						<td id="arrival_time" value="00:00">     </td>
-					</tr> -->
 					<tr>
 						<td>Finish Time</td>
 						<td id="finish_time" value="00:00">     </td>

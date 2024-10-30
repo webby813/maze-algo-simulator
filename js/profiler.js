@@ -27,6 +27,7 @@ function FinishLog(start_Time, finish_Time) {
 	const f_milliseconds = Math.floor(finish_time % 1000);
 
 	finish_ID.textContent = `${f_seconds}:${f_milliseconds}`;
+	console.log(finish_ID.textContent);
 }
 
 function monitorMemoryUsage(label = "Memory usage") {
