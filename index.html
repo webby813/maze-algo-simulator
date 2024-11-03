@@ -44,8 +44,8 @@
 				<span class="choice_label" id="choice_label_1">Maze solving algorithm</span>
 				<label class="select" for="slct_1">
 					<select id="slct_1" required="required">
-						<option value="1">Breadth-First</option>
-						<option selected value="2">Dijkstra</option>
+						<option selected value="1">Dijkstra</option>
+						<option value="2">Bidirectional Dijkstra</option>
 						<option value="3">Contraction Hierarchy Dijkstra</option>
 						<option value="4">A*</option>
 					</select>
@@ -61,6 +61,7 @@
 					<select id="slct_2" required="required">
 						<option hidden selected value="0">Custom</option>
 						<option value="1">Randomized Depth-First</option>
+						<option value="2">Recursive Algorithm</option>
 					</select>
 					<svg>
 						<use xlink:href="#select-arrow-down"></use>
@@ -89,11 +90,11 @@
 				<table class="dashboard-table">
 					<tr>
 						<td>Finish Time</td>
-						<td id="finish_time" value="00:00">     </td>
+						<td id="finish_time" value="00:00">0.000</td>
 					</tr>
 					<tr>
 						<td>Memory used</td>
-						<td id="memory_consumed" >     </td>
+						<td id="memory_consumed" >0.00 MB</td>
 					</tr>
 				</table>
 			</div>

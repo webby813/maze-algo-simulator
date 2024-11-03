@@ -8,17 +8,6 @@ function ResetDashboard() {
 	// arrival_ID.textContent = "0:0";
 }
 
-// function ArrivalLog(start_Time, arrival_Time) {
-// 	console.log("triggered"); // Verify this log appears
-// 	const arrival_ID = document.getElementById("arrival_time");
-
-// 	const arrival_time = arrival_Time - start_Time;
-// 	const a_seconds = Math.floor(arrival_time / 1000);
-// 	const a_milliseconds = Math.floor(arrival_time % 1000);
-
-// 	arrival_ID.textContent = `${a_seconds}:${a_milliseconds}`;
-// }
-
 function FinishLog(start_Time, finish_Time) {
 	const finish_ID = document.getElementById("finish_time");
 
@@ -34,7 +23,7 @@ function monitorMemoryUsage(label = "Memory usage") {
 	const memory_consumed = document.getElementById("memory_consumed");
     if (performance.memory) {
         const { usedJSHeapSize} = performance.memory;
-		memory_consumed.textContent = `${(usedJSHeapSize / 1048576).toFixed(2)}`
+		memory_consumed.textContent = `${(usedJSHeapSize / 1048576).toFixed(2)} MB`
     } else {
         console.warn("Memory API is not supported in this browser.");
     }

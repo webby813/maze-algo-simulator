@@ -237,13 +237,9 @@ input{
 
 .dashboard-table td:nth-child(2) {
     text-align: center;
-    width: 25%;
+    width: 40%;
 }
 
-.dashboard-table td:last-child {
-    text-align: left;
-    width: 15%;
-}
 
 
 

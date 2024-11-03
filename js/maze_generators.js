@@ -99,6 +99,130 @@ function randomized_depth_first()
 	}, 16);
 }
 
+function recursive_division()
+{
+	enclose();
+	let time = 0;
+	let step = 17;
+	timeouts = [];
+
+	function sub_recursive_division(x_min, y_min, x_max, y_max)
+	{
+		if (y_max - y_min > x_max - x_min)
+		{
+			let x = random_int(x_min + 1, x_max);
+			let y = random_int(y_min + 2, y_max - 1);
+
+			if ((x - x_min) % 2 == 0)
+				x += (random_int(0, 2) == 0 ? 1 : -1);
+
+			if ((y - y_min) % 2 == 1)
+				y += (random_int(0, 2) == 0 ? 1 : -1);
+
+			for (let i = x_min + 1; i < x_max; i++)
+				if (i != x)
+				{
+					time += step;
+					timeouts.push(setTimeout(function() { add_wall(i, y); }, time));
+				}
+
+			if (y - y_min > 2)
+				sub_recursive_division(x_min, y_min, x_max, y);
+
+			if (y_max - y > 2)
+				sub_recursive_division(x_min, y, x_max, y_max);
+		}
+
+		else
+		{
+			let x = random_int(x_min + 2, x_max - 1);
+			let y = random_int(y_min + 1, y_max);
+
+			if ((x - x_min) % 2 == 1)
+				x += (random_int(0, 2) == 0 ? 1 : -1);
+
+			if ((y - y_min) % 2 == 0)
+				y += (random_int(0, 2) == 0 ? 1 : -1);
+
+			for (let i = y_min + 1; i < y_max; i++)
+				if (i != y)
+				{
+					time += step;
+					timeouts.push(setTimeout(function() { add_wall(x, i); }, time));
+				}
+
+			if (x - x_min > 2)
+				sub_recursive_division(x_min, y_min, x, y_max);
+
+			if (x_max - x > 2)
+				sub_recursive_division(x, y_min, x_max, y_max);
+		}
+	}
+
+	sub_recursive_division(0, 0, grid.length - 1, grid[0].length - 1);
+	timeouts.push(setTimeout(function() { generating = false; timeouts = []}, time));
+}
+
+// function findCornersAndEnds() {
+//     const corners = [];
+//     const ends = [];
+
+//     const directions = [
+//         [0, 1],  // Right
+//         [1, 0],  // Down
+//         [0, -1], // Left
+//         [-1, 0]  // Up
+//     ];
+
+//     for (let x = 0; x < grid_size_x; x++) {
+//         for (let y = 0; y < grid_size_y; y++) {
+//             if (grid[x][y] !== -1) { // If not a wall
+//                 let count = 0;
+//                 let neighbors = [];
+
+//                 directions.forEach(dir => {
+//                     const nx = x + dir[0];
+//                     const ny = y + dir[1];
+//                     if (nx >= 0 && nx < grid_size_x && ny >= 0 && ny < grid_size_y && grid[nx][ny] !== -1) {
+//                         count++;
+//                         neighbors.push(dir);
+//                     }
+//                 });
+
+//                 if (count === 1) {
+//                     ends.push([x, y]);
+//                 } else if (count === 2) {
+//                     const [dir1, dir2] = neighbors;
+//                     // Check if directions are not opposite
+//                     if (!(dir1[0] === -dir2[0] && dir1[1] === -dir2[1])) {
+//                         corners.push([x, y]);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//     console.log("Corners:", corners);
+//     console.log("Ends:", ends);
+
+//     // Place favicon.png at each corner with smaller size
+//     corners.forEach(([x, y]) => {
+//         const cell = place_to_cell(x, y);
+//         // Clear existing content if needed
+//         cell.innerHTML = '';
+//         const img = document.createElement('img');
+//         img.src = 'resources/images/Favicon.png';
+//         img.alt = 'Corner';
+//         img.classList.add('corner-icon');
+//         // Set image size
+//         img.style.width = '20px';	
+//         img.style.height = '20px';
+//         cell.appendChild(img);
+//     });
+
+//     return { corners, ends };
+// }
+
 function maze_generators()
 {
 	clear_grid();
@@ -150,4 +274,6 @@ function maze_generators()
 
 	if (document.querySelector("#slct_2").value == "1")
 		randomized_depth_first();
+	else if(document.querySelector("#slct_2").value == "2")
+		recursive_division();
 }

@@ -43,7 +43,7 @@ async function maze_solvers_interval() {
     });
 }
 
-async function breadth_first() {
+async function dijkstra() {
     monitorMemoryUsage("Before breadth-first execution");
     const memoryInterval = monitorMemoryPeriodically();
 
@@ -73,7 +73,6 @@ async function breadth_first() {
     } while (frontier.length > 0 && !found);
 
     if (found) {
-
         let current_node = target_pos;
         while (current_node[0] !== start_pos[0] || current_node[1] !== start_pos[1]) {
             switch (grid[current_node[0]][current_node[1]]) {
@@ -94,12 +93,149 @@ async function breadth_first() {
     monitorMemoryUsage("After breadth-first execution");
 }
 
-function dijkstra() {
-    breadth_first();
+function bidirectional_breadth_first()
+{
+    monitorMemoryUsage("Before breadth-first execution");
+    const memoryInterval = monitorMemoryPeriodically();
+
+	node_list = [];
+	node_list_index = 0;
+	path_list = [];
+	path_list_index = 0;
+	found = false;
+	path = false;
+	let current_cell;
+	let start_end;
+	let target_end;
+	let frontier = [start_pos, target_pos];
+	grid[target_pos[0]][target_pos[1]] = 1;
+	grid[start_pos[0]][start_pos[1]] = 11;
+
+	do
+	{
+		current_cell = frontier[0];
+		let list = get_neighbours(current_cell, 1);
+		frontier.splice(0, 1);
+
+		for (let i = 0; i < list.length; i++)
+		{
+			if (get_node(list[i][0], list[i][1]) == 0)
+			{
+				frontier.push(list[i]);
+
+				if (grid[current_cell[0]][current_cell[1]] < 10)
+					grid[list[i][0]][list[i][1]] = i + 1;
+				else
+					grid[list[i][0]][list[i][1]] = 11 + i;
+
+				node_list.push(list[i]);
+			}
+
+			else if (get_node(list[i][0], list[i][1]) > 0)
+			{
+				if (grid[current_cell[0]][current_cell[1]] < 10 && get_node(list[i][0], list[i][1]) > 10)
+				{
+					start_end = current_cell;
+					target_end = list[i];
+					found = true;
+					break;
+				}
+
+				else if (grid[current_cell[0]][current_cell[1]] > 10 && get_node(list[i][0], list[i][1]) < 10)
+				{
+					start_end = list[i];
+					target_end = current_cell;
+					found = true;
+					break;
+				}
+			}
+		}
+	}
+	while (frontier.length > 0 && !found)
+
+	if (found)
+	{
+		let targets = [target_pos, start_pos];
+		let starts = [start_end, target_end];
+
+		for (let i = 0; i < starts.length; i++)
+		{
+			let current_node = starts[i];
+
+			while (current_node[0] != targets[i][0] || current_node[1] != targets[i][1])
+			{
+				path_list.push(current_node);
+
+				switch (grid[current_node[0]][current_node[1]] - (i * 10))
+				{
+					case 1: current_node = [current_node[0], current_node[1] + 1]; break;
+					case 2: current_node = [current_node[0] - 1, current_node[1]]; break;
+					case 3: current_node = [current_node[0], current_node[1] - 1]; break;
+					case 4: current_node = [current_node[0] + 1, current_node[1]]; break;
+					default: break;
+				}
+			}
+
+			if (i == 0)
+				path_list.reverse();
+		}
+
+		path_list.reverse();
+	}
+	maze_solvers_interval();
+
+    clearInterval(memoryInterval);
+    monitorMemoryUsage("After breadth-first execution");
 }
 
-function contraction_hierarchy_Dijkstra() {
-    breadth_first();
+async function ch_dijkstra() {
+    monitorMemoryUsage("Before breadth-first execution");
+    const memoryInterval = monitorMemoryPeriodically();
+
+    node_list = [];
+    node_list_index = 0;
+    path_list = [];
+    path_list_index = 0;
+    found = false;
+    path = false;
+    let frontier = [start_pos];
+    grid[start_pos[0]][start_pos[1]] = 1;
+
+    do {
+        let list = get_neighbours(frontier[0], 1);
+        frontier.splice(0, 1);
+        for (let i = 0; i < list.length; i++) {
+            if (get_node(list[i][0], list[i][1]) === 0) {
+                frontier.push(list[i]);
+                grid[list[i][0]][list[i][1]] = i + 1;
+                if (list[i][0] === target_pos[0] && list[i][1] === target_pos[1]) {
+                    found = true;
+                    break;
+                }
+                node_list.push(list[i]);
+            }
+        }
+    } while (frontier.length > 0 && !found);
+
+    if (found) {
+        let current_node = target_pos;
+        while (current_node[0] !== start_pos[0] || current_node[1] !== start_pos[1]) {
+            switch (grid[current_node[0]][current_node[1]]) {
+                case 1: current_node = [current_node[0], current_node[1] + 1]; break;
+                case 2: current_node = [current_node[0] - 1, current_node[1]]; break;
+                case 3: current_node = [current_node[0], current_node[1] - 1]; break;
+                case 4: current_node = [current_node[0] + 1, current_node[1]]; break;
+                default: break;
+            }
+            path_list.push(current_node);
+        }
+        path_list.pop();
+        path_list.reverse();
+    }
+    await maze_solvers_interval();
+
+    clearInterval(memoryInterval);
+    monitorMemoryUsage("After breadth-first execution");
 }
 
 async function a_star() {
@@ -179,11 +315,11 @@ function maze_solvers() {
         place_to_cell(start_pos[0], start_pos[1]).classList.add("cell_path");
         place_to_cell(target_pos[0], target_pos[1]).classList.add("cell_path");
     } else if (document.querySelector("#slct_1").value === "1") {
-        breadth_first();
+        dijkstra()();
     } else if (document.querySelector("#slct_1").value === "2") {
-        dijkstra();
+        bidirectional_breadth_first();
     } else if (document.querySelector("#slct_1").value === "3") {
-        contraction_hierarchy_Dijkstra()
+        ch_dijkstra();
     } else if (document.querySelector("#slct_1").value === "4") {
         a_star();
     }
