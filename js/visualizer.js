@@ -1,5 +1,7 @@
 "use strict";
 
+
+
 function set_grid_properties(custom_grid_size)
 {
     let ratio = (window.innerWidth - menu_width) / window.innerHeight;
@@ -28,8 +30,7 @@ function set_grid_properties(custom_grid_size)
 }
 
 
-function generate_grid()
-{
+function generate_grid() {
     // Get the value from the input field
     let input_grid_size = parseInt(document.querySelector("#grid-size-input").value);
 
@@ -45,12 +46,10 @@ function generate_grid()
     let table = document.createElement("table");
     table.id = "my_table";
 
-    for (let i = 0; i < grid_size_y; i++)
-    {
+    for (let i = 0; i < grid_size_y; i++) {
         let row = document.createElement("tr");
 
-        for (let j = 0; j < grid_size_x; j++)
-        {
+        for (let j = 0; j < grid_size_x; j++) {
             let cell = document.createElement("td");
             let class_name = "";
 
@@ -87,8 +86,17 @@ function generate_grid()
 
     place_to_cell(start_pos[0], start_pos[1]).classList.add("start");
     place_to_cell(target_pos[0], target_pos[1]).classList.add("target");
-}
 
+    // Reattach event listeners after creating the new table
+    visualizer_event_listeners();
+    
+    // Reset state variables
+    clicking = false;
+    moving_start = false;
+    moving_target = false;
+    generating = false;
+    grid_clean = true;
+}
 
 function delete_grid()
 {
