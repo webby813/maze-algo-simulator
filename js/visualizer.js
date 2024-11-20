@@ -89,13 +89,7 @@ function generate_grid() {
 
     // Reattach event listeners after creating the new table
     visualizer_event_listeners();
-    
-    // Reset state variables
-    clicking = false;
-    moving_start = false;
-    moving_target = false;
-    generating = false;
-    grid_clean = true;
+
 }
 
 function delete_grid()

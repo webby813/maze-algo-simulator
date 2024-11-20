@@ -163,100 +163,44 @@ function recursive_division()
 	timeouts.push(setTimeout(function() { generating = false; timeouts = []}, time));
 }
 
-// function findCornersAndEnds() {
-//     const corners = [];
-//     const ends = [];
-
-//     const directions = [
-//         [0, 1],  // Right
-//         [1, 0],  // Down
-//         [0, -1], // Left
-//         [-1, 0]  // Up
-//     ];
-
-//     for (let x = 0; x < grid_size_x; x++) {
-//         for (let y = 0; y < grid_size_y; y++) {
-//             if (grid[x][y] !== -1) { // If not a wall
-//                 let count = 0;
-//                 let neighbors = [];
-
-//                 directions.forEach(dir => {
-//                     const nx = x + dir[0];
-//                     const ny = y + dir[1];
-//                     if (nx >= 0 && nx < grid_size_x && ny >= 0 && ny < grid_size_y && grid[nx][ny] !== -1) {
-//                         count++;
-//                         neighbors.push(dir);
-//                     }
-//                 });
-
-//                 if (count === 1) {
-//                     ends.push([x, y]);
-//                 } else if (count === 2) {
-//                     const [dir1, dir2] = neighbors;
-//                     // Check if directions are not opposite
-//                     if (!(dir1[0] === -dir2[0] && dir1[1] === -dir2[1])) {
-//                         corners.push([x, y]);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-
-//     console.log("Corners:", corners);
-//     console.log("Ends:", ends);
-
-//     // Place favicon.png at each corner with smaller size
-//     corners.forEach(([x, y]) => {
-//         const cell = place_to_cell(x, y);
-//         // Clear existing content if needed
-//         cell.innerHTML = '';
-//         const img = document.createElement('img');
-//         img.src = 'resources/images/Favicon.png';
-//         img.alt = 'Corner';
-//         img.classList.add('corner-icon');
-//         // Set image size
-//         img.style.width = '20px';	
-//         img.style.height = '20px';
-//         cell.appendChild(img);
-//     });
-
-//     return { corners, ends };
-// }
-
 function maze_generators() {
     clear_grid();
-    let start_temp = [...start_pos]; // Create copies of arrays to avoid reference issues
-    let target_temp = [...target_pos];
+	let start_temp = start_pos;
+	let target_temp = target_pos;
     hidden_clear();
     generating = true;
 
-    if (start_temp[0] % 2 == 0) {
-        if (start_temp[0] == grid.length - 1)
-            start_temp[0] -= 1;
-        else
-            start_temp[0] += 1;
-    }
-
-    if (start_temp[1] % 2 == 0) {
-        if (start_temp[1] == 0)
-            start_temp[1] += 1;
-        else
-            start_temp[1] -= 1;
-    }
-
-    if (target_temp[0] % 2 == 0) {
-        if (target_temp[0] == grid.length - 1)
-            target_temp[0] -= 1;
-        else
-            target_temp[0] += 1;
-    }
-
-    if (target_temp[1] % 2 == 0) {
-        if (target_temp[1] == 0)
-            target_temp[1] += 1;
-        else
-            target_temp[1] -= 1;
-    }
+	if (start_temp[0] % 2 == 0)
+		{
+			if (start_temp[0] == grid.length - 1)
+				start_temp[0] -= 1;
+			else
+				start_temp[0] += 1;
+		}
+	
+		if (start_temp[1] % 2 == 0)
+		{
+			if (start_temp[1] == 0)
+				start_temp[1] += 1;
+			else
+				start_temp[1] -= 1;
+		}
+	
+		if (target_temp[0] % 2 == 0)
+		{
+			if (target_temp[0] == grid.length - 1)
+				target_temp[0] -= 1;
+			else
+				target_temp[0] += 1;
+		}
+	
+		if (target_temp[1] % 2 == 0)
+		{
+			if (target_temp[1] == 0)
+				target_temp[1] += 1;
+			else
+				target_temp[1] -= 1;
+		}
 
     // Ensure we're working with valid positions before modifying the DOM
     if (isValidPosition(start_temp[0], start_temp[1]) && 
