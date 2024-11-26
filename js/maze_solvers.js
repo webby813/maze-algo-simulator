@@ -22,7 +22,7 @@ function cleanupMemoryMonitoring() {
     }
 }
 
-function ManhattanDistance(point_1, point_2) {
+function distance(point_1, point_2) {
     return Math.sqrt(Math.pow(point_2[0] - point_1[0], 2) + Math.pow(point_2[1] - point_1[1], 2));
 }
 
@@ -116,8 +116,9 @@ async function dijkstra() {
     allocateData();
 }
 
-function bidirectional_breadth_first()
+async function bidirectional_breadth_first()
 {
+    monitorMemoryPeriodically();
     monitorMemoryUsage();
     const memoryInterval = monitorMemoryPeriodically();
 
@@ -205,7 +206,7 @@ function bidirectional_breadth_first()
 
 		path_list.reverse();
 	}
-	maze_solvers_interval();
+	await maze_solvers_interval();
 
     clearInterval(memoryInterval);
     set_PathVisited(node_list.length);
@@ -234,8 +235,8 @@ async function a_star() {
 
     do {
         frontier.sort(function (a, b) {
-            let a_value = cost_grid[a[0]][a[1]] + ManhattanDistance(a, target_pos) * Math.sqrt(2);
-            let b_value = cost_grid[b[0]][b[1]] + ManhattanDistance(b, target_pos) * Math.sqrt(2);
+            let a_value = cost_grid[a[0]][a[1]] + distance(a, target_pos) * Math.sqrt(2);
+            let b_value = cost_grid[b[0]][b[1]] + distance(b, target_pos) * Math.sqrt(2);
             return a_value - b_value;
         });
 
@@ -285,7 +286,7 @@ async function a_star() {
     allocateData();
 }
 
-async function TestingAlgo() {
+async function enhanced_dijkstra() {
     monitorMemoryUsage();
     const memoryInterval = monitorMemoryPeriodically();
 
@@ -334,8 +335,8 @@ async function TestingAlgo() {
     while (frontier_start.length > 0 && frontier_target.length > 0 && !found) {
         // Expand from start
         frontier_start.sort(function (a, b) {
-            let a_value = cost_grid_start[a[0]][a[1]] + ManhattanDistance(a, target_pos);
-            let b_value = cost_grid_start[b[0]][b[1]] + ManhattanDistance(b, target_pos);
+            let a_value = cost_grid_start[a[0]][a[1]] + distance(a, target_pos);
+            let b_value = cost_grid_start[b[0]][b[1]] + distance(b, target_pos);
             return a_value - b_value;
         });
 
@@ -368,8 +369,8 @@ async function TestingAlgo() {
 
         // Expand from target
         frontier_target.sort(function (a, b) {
-            let a_value = cost_grid_target[a[0]][a[1]] + ManhattanDistance(a, start_pos);
-            let b_value = cost_grid_target[b[0]][b[1]] + ManhattanDistance(b, start_pos);
+            let a_value = cost_grid_target[a[0]][a[1]] + distance(a, start_pos);
+            let b_value = cost_grid_target[b[0]][b[1]] + distance(b, start_pos);
             return a_value - b_value;
         });
 
@@ -476,9 +477,8 @@ function maze_solvers() {
     } else if (document.querySelector("#slct_1").value === "3") {
         a_star();
     } else if (document.querySelector("#slct_1").value === "4") {
-        TestingAlgo();
+        enhanced_dijkstra();
     }
-
 }
 
 function allocateData(){

@@ -1,7 +1,5 @@
 "use strict";
 
-
-
 function set_grid_properties(custom_grid_size)
 {
     let ratio = (window.innerWidth - menu_width) / window.innerHeight;
