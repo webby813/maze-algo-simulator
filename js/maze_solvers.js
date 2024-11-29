@@ -2,19 +2,6 @@
 
 let memoryWorker;
 
-function monitorMemoryPeriodically(interval = 1000) {
-    if (typeof Worker !== 'undefined') {
-        memoryWorker = new Worker('memory-worker.js');
-        memoryWorker.postMessage('monitor');
-        
-        // Optional: Listen to memory updates
-        memoryWorker.onmessage = function(e) {
-            console.log('Memory Usage:', e.data);
-            // You could update a UI element or log memory stats
-        };
-    }
-}
-
 function cleanupMemoryMonitoring() {
     if (memoryWorker) {
         memoryWorker.postMessage('stop');
@@ -27,8 +14,7 @@ function distance(point_1, point_2) {
 }
 
 async function maze_solvers_interval() {
-    const start_Time = performance.now();
-    let finish_Time = 0;
+
     return new Promise((resolve) => {
         const my_interval = window.setInterval(function () {
             if (!path) {
@@ -40,8 +26,6 @@ async function maze_solvers_interval() {
                         clearInterval(my_interval);
                         resolve();
                     } else {
-                        finish_Time = performance.now();
-                        FinishLog(start_Time, finish_Time);
                         path = true;
                         place_to_cell(start_pos[0], start_pos[1]).classList.add("cell_path");
                     }
@@ -62,9 +46,8 @@ async function maze_solvers_interval() {
 }
 
 async function dijkstra() {
-    monitorMemoryPeriodically();
-    monitorMemoryUsage();
-    const memoryInterval = monitorMemoryPeriodically();
+    const start_Time = performance.now();
+    let finish_Time = 0;
 
     node_list = [];
     node_list_index = 0;
@@ -107,20 +90,17 @@ async function dijkstra() {
         path_list.reverse();
     }
     await maze_solvers_interval();
+    finish_Time = performance.now();
+    FinishLog(start_Time, finish_Time);
 
-    clearInterval(memoryInterval);
+    clearInterval(my_interval);
     set_PathVisited(node_list.length);
-    monitorMemoryUsage();
     cleanupMemoryMonitoring();
-
-    allocateData();
 }
 
-async function bidirectional_breadth_first()
-{
-    monitorMemoryPeriodically();
-    monitorMemoryUsage();
-    const memoryInterval = monitorMemoryPeriodically();
+async function bidirectional_breadth_first(){
+    const start_Time = performance.now();
+    let finish_Time = 0;
 
 	node_list = [];
 	node_list_index = 0;
@@ -207,18 +187,17 @@ async function bidirectional_breadth_first()
 		path_list.reverse();
 	}
 	await maze_solvers_interval();
+    finish_Time = performance.now();
+    FinishLog(start_Time, finish_Time);
 
-    clearInterval(memoryInterval);
+    clearInterval(my_interval);
     set_PathVisited(node_list.length);
-    monitorMemoryUsage();
     cleanupMemoryMonitoring();
-
-    allocateData();
 }
 
 async function a_star() {
-    monitorMemoryUsage();
-    const memoryInterval = monitorMemoryPeriodically();
+    const start_Time = performance.now();
+    let finish_Time = 0;
 
     node_list = [];
     node_list_index = 0;
@@ -277,18 +256,17 @@ async function a_star() {
     }
 
     await maze_solvers_interval();
+    finish_Time = performance.now();
+    FinishLog(start_Time, finish_Time);
 
-    clearInterval(memoryInterval);
+    clearInterval(my_interval);
     set_PathVisited(node_list.length);
-    monitorMemoryUsage();
     cleanupMemoryMonitoring();
-
-    allocateData();
 }
 
 async function enhanced_dijkstra() {
-    monitorMemoryUsage();
-    const memoryInterval = monitorMemoryPeriodically();
+    const start_Time = performance.now();
+    let finish_Time = 0;
 
     node_list = [];
     node_list_index = 0;
@@ -452,13 +430,12 @@ async function enhanced_dijkstra() {
     }
 
     await maze_solvers_interval();
+    finish_Time = performance.now();
+    FinishLog(start_Time, finish_Time);
 
-    clearInterval(memoryInterval);
+    clearInterval(my_interval);
     set_PathVisited(node_list.length);
-    monitorMemoryUsage();
     cleanupMemoryMonitoring();
-
-    allocateData();
 }
 
 function maze_solvers() {
@@ -479,14 +456,4 @@ function maze_solvers() {
     } else if (document.querySelector("#slct_1").value === "4") {
         enhanced_dijkstra();
     }
-}
-
-function allocateData(){
-        const finish_ID = document.getElementById("finish_time");
-        const memory_consumed = document.getElementById("memory_consumed");
-        const node_length = node_list.length;
-        const execution_time = finish_ID.textContent;
-        const memory = memory_consumed.textContent;
-    
-        console.log(node_length, execution_time, memory);
 }

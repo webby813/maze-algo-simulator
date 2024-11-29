@@ -58,7 +58,6 @@ function randomized_depth_first()
 	{
 		if (stack.length == 0)
 		{
-			clearInterval(my_interval);
 			clear_grid();
 			generating = false;
 			return;
