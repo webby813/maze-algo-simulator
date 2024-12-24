@@ -286,8 +286,8 @@ async function enhanced_dijkstra() {
     let frontier_target = [target_pos];
 
     // Initialize two cost grids
-    let cost_grid_start = new Array(grid.length).fill(0).map(() => new Array(grid[0].length).fill(Infinity));
-    let cost_grid_target = new Array(grid.length).fill(0).map(() => new Array(grid[0].length).fill(Infinity));
+    let cost_grid_start = Array(grid.length).fill(0).map(() => new Array(grid[0].length).fill(0));
+    let cost_grid_target = Array(grid.length).fill(0).map(() => new Array(grid[0].length).fill(0));
 
     cost_grid_start[start_pos[0]][start_pos[1]] = 0;
     cost_grid_target[target_pos[0]][target_pos[1]] = 0;
