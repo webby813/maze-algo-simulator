@@ -16,7 +16,7 @@ function init_css_properties_after()
 window.onload = function()
 {
 	init_css_properties_before();
-	generate_grid();//Where the grid generated
+	generate_grid();
 	init_css_properties_after();
 
 	window.addEventListener('resize', () =>

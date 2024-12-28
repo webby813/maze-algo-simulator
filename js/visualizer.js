@@ -28,7 +28,8 @@ function set_grid_properties(custom_grid_size)
 }
 
 
-function generate_grid() {
+function generate_grid()
+{
     // Get the value from the input field
     let input_grid_size = parseInt(document.querySelector("#grid-size-input").value);
 
@@ -44,49 +45,48 @@ function generate_grid() {
     let table = document.createElement("table");
     table.id = "my_table";
 
-    for (let i = 0; i < grid_size_y; i++) {
-        let row = document.createElement("tr");
+	for (let i = 0; i < grid_size_y; i++)
+	{
+		let row = document.createElement("tr");
 
-        for (let j = 0; j < grid_size_x; j++) {
-            let cell = document.createElement("td");
-            let class_name = "";
+		for (let j = 0; j < grid_size_x; j++)
+		{
+			let cell = document.createElement("td");
+			let class_name = "";
 
-            if ((i + j) % 2 == 0)
-                class_name = "cell cell_1";
-            else
-                class_name = "cell cell_2";
+			if ((i + j) % 2 == 0)
+				class_name = "cell cell_1";
+			else
+				class_name = "cell cell_2";
 
-            class_name += " x_" + j.toString(10) + " y_" + i.toString(10);
-            cell.className = class_name;
-            row.appendChild(cell);
-        }
+			class_name += " x_" + j.toString(10) + " y_" + i.toString(10);
+			cell.className = class_name;
+			row.appendChild(cell);
+		}
 
-        table.appendChild(row);
-    }
+		table.appendChild(row);
+	}
 
-    document.querySelector("#grid").appendChild(table);
-    grid = new Array(grid_size_x).fill(0).map(() => new Array(grid_size_y).fill(0));
+	document.querySelector("#grid").appendChild(table);
+	grid = new Array(grid_size_x).fill(0).map(() => new Array(grid_size_y).fill(0));
 
-    start_pos = [Math.floor(grid_size_x / 4), Math.floor(grid_size_y / 2)];
-    target_pos = [Math.floor((3 * grid_size_x) / 4), Math.floor(grid_size_y / 2)];
+	start_pos = [Math.floor(grid_size_x / 4), Math.floor(grid_size_y / 2)];
+	target_pos = [Math.floor((3 * grid_size_x) / 4), Math.floor(grid_size_y / 2)];
 
-    if (start_pos[0] % 2 == 0)
-        start_pos[0] += 1;
+	if (start_pos[0] % 2 == 0)
+		start_pos[0] += 1;
 
-    if (start_pos[1] % 2 == 0)
-        start_pos[1] -= 1;
+	if (start_pos[1] % 2 == 0)
+		start_pos[1] -= 1;
 
-    if (target_pos[0] % 2 == 0)
-        target_pos[0] += 1;
+	if (target_pos[0] % 2 == 0)
+		target_pos[0] += 1;
 
-    if (target_pos[1] % 2 == 0)
-        target_pos[1] -= 1;
+	if (target_pos[1] % 2 == 0)
+		target_pos[1] -= 1;
 
-    place_to_cell(start_pos[0], start_pos[1]).classList.add("start");
-    place_to_cell(target_pos[0], target_pos[1]).classList.add("target");
-
-    // Reattach event listeners after creating the new table
-    visualizer_event_listeners();
+	place_to_cell(start_pos[0], start_pos[1]).classList.add("start");
+	place_to_cell(target_pos[0], target_pos[1]).classList.add("target");
 
 }
 
@@ -130,7 +130,6 @@ function remove_wall(x, y)
 
 function clear_grid()
 {
-	ResetDashboard();
 	if (!grid_clean)
 	{
 		for (let i = 0; i < timeouts.length; i++)
