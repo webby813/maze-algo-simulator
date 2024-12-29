@@ -13,10 +13,10 @@ function distance(point_1, point_2) {
     return Math.sqrt(Math.pow(point_2[0] - point_1[0], 2) + Math.pow(point_2[1] - point_1[1], 2));
 }
 
-async function maze_solvers_interval() {
+function maze_solvers_interval() {
 
     return new Promise((resolve) => {
-        const my_interval = window.setInterval(function () {
+        my_interval = window.setInterval(function () {
             if (!path) {
                 place_to_cell(node_list[node_list_index][0], node_list[node_list_index][1]).classList.add("cell_algo");
                 node_list_index++;
